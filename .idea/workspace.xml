@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cad93a9d-29f8-4cfc-912c-dc042b79ac66" name="Changes" comment="fc">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="cad93a9d-29f8-4cfc-912c-dc042b79ac66" name="Changes" comment="fc" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,7 +86,7 @@
       <updated>1681352271965</updated>
       <workItem from="1681352273436" duration="1352000" />
       <workItem from="1681353726400" duration="542000" />
-      <workItem from="1681355411810" duration="15031000" />
+      <workItem from="1681355411810" duration="15327000" />
     </task>
     <task id="LOCAL-00001" summary="fc">
       <created>1681352698751</created>
@@ -125,7 +123,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681373057053</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fc">
+      <created>1681373700334</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1681373700334</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,6 +141,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="fc" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/training_fastapi$main.coverage" NAME="main Coverage Results" MODIFIED="1681373468485" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
     <SUITE FILE_PATH="coverage/training_fastapi$__main__.coverage" NAME="__main__ Coverage Results" MODIFIED="1681354066171" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
   </component>
 </project>
