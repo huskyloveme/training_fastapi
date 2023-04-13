@@ -97,6 +97,7 @@ async def sql_update_imployee(employee: list[Employee]):
     except Exception as e:
         raise HTTPException(status_code=500, detail="Update employee failed")
 
+
 @app.delete("/nosql/delete_employee")
 async def sql_delete_imployee(request_body: dict):
     try:
