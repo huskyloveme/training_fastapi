@@ -1,36 +1,108 @@
+import logging
 import mysql.connector
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from models.employee import Employee
-from models.database_sql import mydb
+from models.database_sql import mydb_sql
+from models.database_nosql import collection_employee
 
 app = FastAPI()
 
-# if mydb.is_connected():
-#     print("Connected to MySQL database!")
-# else:
-#     print("Failed to connect to MySQL database.")
-
-mycursor = mydb.cursor()
-@app.post("/add_employee")
-async def add_employee(employee: Employee):
-
-    # Thực hiện lệnh SQL để thêm nhân viên vào cơ sở dữ liệu
-    sql = "INSERT INTO employee (name, age, address, employee_code) VALUES (%s, %s, %s, %s)"
-    val = (employee.name, employee.age, employee.address, employee.employee_code)
-    mycursor.execute(sql, val)
+#Connect DB SQL:
+##################### SQL########################
+mycursor = mydb_sql.cursor()
+@app.post("/sql/add_employee")
+async def sql_add_employee(employees: list[Employee]):
     try:
-        mydb.commit()
+        for i in employees:
+            sql = "INSERT INTO employee (name, age, address, employee_code) VALUES (%s, %s, %s, %s)"
+            val = (i.name, i.age, i.address, i.employee_code)
+            mycursor.execute(sql, val)
+            mydb_sql.commit()
         return {"message": "Success"}
     except mysql.connector.Error as e:
-        return {"message": "Error inserting record: {}".format(e)}
+        raise HTTPException(status_code=500, detail="Add Employees failed")
 
-@app.get("/all_employees")
-async def get_all_employees():
+@app.get("/sql/all_employees")
+async def sql_get_all_employees():
     try:
         sql = "SELECT * FROM employee"
         mycursor.execute(sql)
         result = mycursor.fetchall()
-        return {"employees": result}
+        fields = [i[0] for i in mycursor.description]
+        results = []
+        for row in result:
+            results.append(dict(zip(fields, row)))
+        return {"employees": results}
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=500, detail="Can't show employess")
 
+@app.put("/sql/update_employee")
+async def sql_update_imployee(employee: Employee):
+    try:
+        sql = "UPDATE employee SET name = %s, age = %s, address = %s, employee_code = %s WHERE id = %s"
+        val = (employee.name, employee.age, employee.address, employee.employee_code, employee.id,)
+        mycursor.execute(sql, val)
+        mydb_sql.commit()
+        return {"message": "Success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Update employee failed")
+
+@app.delete("/sql/delete_employee")
+async def sql_delete_imployee(request_body: dict):
+    try:
+        sql = "DELETE from employee WHERE id = %s"
+        val = (request_body.get('id'),)
+        mycursor.execute(sql, val)
+        mydb_sql.commit()
+        return {"message": "Success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Delete employee failed")
+
+
+
+#################### NOSQL########################
+@app.post("/nosql/add_employee")
+async def add_employee(employees: list[Employee]):
+    try:
+        employees_data = []
+        for i in employees:
+            employees_data.append(dict(i))
+        collection_employee.insert_many(employees_data)
+        return {"message": "Success"}
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail="Add Employees failed")
+
+@app.get("/nosql/all_employees")
+async def get_all_employees():
+    try:
+        get_all_employees = collection_employee.find()
+        results = []
+        for docs in get_all_employees:
+            employee_dict = {k: v for k,v in docs.items() if k != '_id'}
+            results.append(employee_dict)
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Can't show employess")
+
+@app.put("/nosql/update_employee")
+async def sql_update_imployee(employee: list[Employee]):
+    try:
+        for i in employee:
+            search = {'id': i.id}
+            new_values = {'name': i.name,'age': i.age,'address': i.address,'employee_code': i.employee_code}
+            print(search)
+            print(new_values)
+            collection_employee.update_one(filter=search, update={"$set": new_values}, upsert= False)
+        return {"message": "Success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Update employee failed")
+
+@app.delete("/nosql/delete_employee")
+async def sql_delete_imployee(request_body: dict):
+    try:
+        if not collection_employee.find({'id': request_body.get('id')}):
+            return {"message": "Employee cannot be found"}
+        collection_employee.delete_one({'id': request_body.get('id')})
+        return {"message": "Success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Delete employee failed")
