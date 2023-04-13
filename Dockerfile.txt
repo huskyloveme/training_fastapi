@@ -1,18 +1,11 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
+FROM python:3.9
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY requirement.txt /app
 
-RUN pip install -r requirements.txt
+COPY . /app
 
-COPY . .
+RUN pip install -r requirement.txt
 
-ENV MYSQL_HOST=db
-ENV MYSQL_PORT=3306
-ENV MYSQL_USER=root
-ENV MYSQL_PASSWORD=
-
-EXPOSE 80
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "app"]

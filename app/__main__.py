@@ -1,11 +1,19 @@
 import logging
+import uvicorn
 import mysql.connector
 from fastapi import FastAPI, HTTPException
-from models.employee import Employee
-from models.database_sql import mydb_sql
-from models.database_nosql import collection_employee
+from app.models.employee import Employee
+from app.models.database_sql import mydb_sql
+from app.models.database_nosql import collection_employee
 
 app = FastAPI()
+
+
+mycursor = mydb_sql.cursor()
+@app.get("/")
+async def main():
+    return {"message": "Welcome Fastapi project"}
+
 
 #Connect DB SQL:
 ##################### SQL########################
@@ -107,3 +115,6 @@ async def sql_delete_imployee(request_body: dict):
         return {"message": "Success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail="Delete employee failed")
+
+if __name__ == '__main__':
+    uvicorn.run(app, host="0.0.0.0", port=8000)
