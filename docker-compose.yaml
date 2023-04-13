@@ -1,0 +1,21 @@
+version: '3'
+services:
+  fastapi:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+      - mysql
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+  mysql:
+    image: mysql:8.0.26
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=fastapi
+    ports:
+      - "3306:3306"

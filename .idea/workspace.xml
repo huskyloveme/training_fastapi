@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cad93a9d-29f8-4cfc-912c-dc042b79ac66" name="Changes" comment="fc">
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/database_sql.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/database_sql.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/employee.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/employee.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +72,11 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -85,7 +88,7 @@
       <updated>1681352271965</updated>
       <workItem from="1681352273436" duration="1352000" />
       <workItem from="1681353726400" duration="542000" />
-      <workItem from="1681355411810" duration="14413000" />
+      <workItem from="1681355411810" duration="15031000" />
     </task>
     <task id="LOCAL-00001" summary="fc">
       <created>1681352698751</created>
@@ -108,7 +111,21 @@
       <option name="project" value="LOCAL" />
       <updated>1681358484114</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fc">
+      <created>1681373041218</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1681373041218</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fc">
+      <created>1681373057053</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1681373057053</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
