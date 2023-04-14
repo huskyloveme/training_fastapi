@@ -3,19 +3,23 @@ services:
   fastapi:
     build:
       context: .
+      dockerfile: dockerfile.txt
     ports:
       - "8888:8000"
     depends_on:
       - mongo
-      - mysql
+#      - mysql
   mongo:
     image: mongo
     ports:
-      - "27017:27017"
-  mysql:
-    image: mysql:8.0.26
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=fastapi
-    ports:
-      - "3306:3306"
+      - "27777:27017"
+#  mysql:
+#    image: mysql:8.0.26
+#    environment:
+#      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+#      MYSQL_DATABASE: "fastapi"
+#      MYSQL_USER: "root"
+#      MYSQL_PASSWORD: ""
+#      MYSQL_RANDOM_ROOT_PASSWORD: "no"
+#    ports:
+#      - "3306:3306"

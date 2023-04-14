@@ -15,6 +15,7 @@ async def main():
     return {"message": "Welcome Fastapi project"}
 
 
+
 #Connect DB SQL:
 ##################### SQL########################
 mycursor = mydb_sql.cursor()
