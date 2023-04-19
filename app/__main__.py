@@ -1,72 +1,75 @@
 import logging
 import uvicorn
 import mysql.connector
-from fastapi import FastAPI, HTTPException
-from app.models.employee import Employee
-from app.models.database_sql import mydb_sql
-from app.models.database_nosql import collection_employee
+from bson import Binary
+from fastapi.responses import JSONResponse
+from fastapi import FastAPI, HTTPException, File, UploadFile
+from motor.motor_asyncio import AsyncIOMotorClient
+from app.models.employee import Employee, Image
+# from app.models.database_sql import mydb_sql
+from app.models.database_nosql import collection_employee, collection_image
 
 app = FastAPI()
 
 
-mycursor = mydb_sql.cursor()
+# mycursor = mydb_sql.cursor()
 @app.get("/")
 async def main():
     return {"message": "Welcome Fastapi project"}
 
-
-
-#Connect DB SQL:
-##################### SQL########################
-mycursor = mydb_sql.cursor()
-@app.post("/sql/add_employee")
-async def sql_add_employee(employees: list[Employee]):
-    try:
-        for i in employees:
-            sql = "INSERT INTO employee (name, age, address, employee_code) VALUES (%s, %s, %s, %s)"
-            val = (i.name, i.age, i.address, i.employee_code)
-            mycursor.execute(sql, val)
-            mydb_sql.commit()
-        return {"message": "Success"}
-    except mysql.connector.Error as e:
-        raise HTTPException(status_code=500, detail="Add Employees failed")
-
-@app.get("/sql/all_employees")
-async def sql_get_all_employees():
-    try:
-        sql = "SELECT * FROM employee"
-        mycursor.execute(sql)
-        result = mycursor.fetchall()
-        fields = [i[0] for i in mycursor.description]
-        results = []
-        for row in result:
-            results.append(dict(zip(fields, row)))
-        return {"employees": results}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Can't show employess")
-
-@app.put("/sql/update_employee")
-async def sql_update_imployee(employee: Employee):
-    try:
-        sql = "UPDATE employee SET name = %s, age = %s, address = %s, employee_code = %s WHERE id = %s"
-        val = (employee.name, employee.age, employee.address, employee.employee_code, employee.id,)
-        mycursor.execute(sql, val)
-        mydb_sql.commit()
-        return {"message": "Success"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Update employee failed")
-
-@app.delete("/sql/delete_employee")
-async def sql_delete_imployee(request_body: dict):
-    try:
-        sql = "DELETE from employee WHERE id = %s"
-        val = (request_body.get('id'),)
-        mycursor.execute(sql, val)
-        mydb_sql.commit()
-        return {"message": "Success"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Delete employee failed")
-
+#
+#
+# #Connect DB SQL:
+# ##################### SQL########################
+# mycursor = mydb_sql.cursor()
+# @app.post("/sql/add_employee")
+# async def sql_add_employee(employees: list[Employee]):
+#     try:
+#         for i in employees:
+#             sql = "INSERT INTO employee (name, age, address, employee_code) VALUES (%s, %s, %s, %s)"
+#             val = (i.name, i.age, i.address, i.employee_code)
+#             mycursor.execute(sql, val)
+#             mydb_sql.commit()
+#         return {"message": "Success"}
+#     except mysql.connector.Error as e:
+#         raise HTTPException(status_code=500, detail="Add Employees failed")
+#
+# @app.get("/sql/all_employees")
+# async def sql_get_all_employees():
+#     try:
+#         sql = "SELECT * FROM employee"
+#         mycursor.execute(sql)
+#         result = mycursor.fetchall()
+#         fields = [i[0] for i in mycursor.description]
+#         results = []
+#         for row in result:
+#             results.append(dict(zip(fields, row)))
+#         return {"employees": results}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail="Can't show employess")
+#
+# @app.put("/sql/update_employee")
+# async def sql_update_imployee(employee: Employee):
+#     try:
+#         sql = "UPDATE employee SET name = %s, age = %s, address = %s, employee_code = %s WHERE id = %s"
+#         val = (employee.name, employee.age, employee.address, employee.employee_code, employee.id,)
+#         mycursor.execute(sql, val)
+#         mydb_sql.commit()
+#         return {"message": "Success"}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail="Update employee failed")
+#
+# @app.delete("/sql/delete_employee")
+# async def sql_delete_imployee(request_body: dict):
+#     try:
+#         sql = "DELETE from employee WHERE id = %s"
+#         val = (request_body.get('id'),)
+#         mycursor.execute(sql, val)
+#         mydb_sql.commit()
+#         return {"message": "Success"}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail="Delete employee failed")
+#
 
 
 #################### NOSQL########################
@@ -117,5 +120,13 @@ async def sql_delete_imployee(request_body: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail="Delete employee failed")
 
+@app.post("/nosql/upload_image")
+async def upload_image(file: UploadFile = File(...)):
+    contents = await file.read()
+    data_dict = Binary(contents)
+    return JSONResponse({"file_name": file.filename, "data": str(type(byte_data))})
+
 if __name__ == '__main__':
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+

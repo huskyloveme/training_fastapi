@@ -15,7 +15,7 @@ from beanie import init_beanie
 client = MongoClient("mongodb://localhost:27017/")
 db = client["fastapi"]
 collection_employee = db["employee"]
-
+collection_image = db["images"]
 # client = MongoClient("mongodb://localhost:27017/")
 # db_names = client.list_database_names()
 #

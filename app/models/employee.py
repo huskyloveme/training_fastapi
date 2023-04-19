@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from beanie import Document, Indexed
-
+from fastapi import File, UploadFile
 
 class Employee(BaseModel):
     id: Optional[int]
@@ -19,3 +19,16 @@ class Test(Document):
 
     class Settings:
         name = "test"
+
+class Image(BaseModel):
+    id: int
+    name: str
+    data: bytes
+
+    schema_extra = {
+        "example": {
+            "id": 1,
+            "name": "image.jpg",
+            "data": "<binary data>",
+        }
+    }
