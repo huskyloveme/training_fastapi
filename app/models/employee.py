@@ -24,11 +24,3 @@ class Image(BaseModel):
     id: int
     name: str
     data: bytes
-
-    schema_extra = {
-        "example": {
-            "id": 1,
-            "name": "image.jpg",
-            "data": "<binary data>",
-        }
-    }

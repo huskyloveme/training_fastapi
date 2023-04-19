@@ -3,12 +3,14 @@ import uvicorn
 import mysql.connector
 from bson import Binary
 from fastapi.responses import JSONResponse
-from fastapi import FastAPI, HTTPException, File, UploadFile
+from fastapi import FastAPI, HTTPException, File, UploadFile, Response
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.models.employee import Employee, Image
 # from app.models.database_sql import mydb_sql
 from app.models.database_nosql import collection_employee, collection_image
-
+import bson.binary
+from PIL import Image
+from io import BytesIO
 app = FastAPI()
 
 
@@ -123,8 +125,18 @@ async def sql_delete_imployee(request_body: dict):
 @app.post("/nosql/upload_image")
 async def upload_image(file: UploadFile = File(...)):
     contents = await file.read()
-    data_dict = Binary(contents)
-    return JSONResponse({"file_name": file.filename, "data": str(type(byte_data))})
+    data = bson.binary.Binary(contents)
+    image = {"name": "a", "id": 1, "data": data}
+    result = collection_image.insert_one(image)
+    return {"id": str(result.inserted_id)}
+
+@app.get("/images/{image_id}")
+async def read_image(image_id: int):
+    image = collection_image.find_one({"id": image_id})
+    if image:
+        response = Response(content=image['data'], media_type="image/jpeg")
+        return response
+    return {"error": "Image not found"}
 
 if __name__ == '__main__':
     uvicorn.run(app, host="0.0.0.0", port=8000)
